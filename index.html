@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Stop-Loss Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <h1>Crypto Stop-Loss Calculator</h1>
+
+        <!-- Cryptocurrency Selection -->
+        <div class="crypto-buttons">
+            <button onclick="selectCrypto('bitcoin', 'BTC')">BTC</button>
+            <button onclick="selectCrypto('ethereum', 'ETH')">ETH</button>
+            <button onclick="selectCrypto('solana', 'SOL')">SOL</button>
+        </div>
+
+        <!-- Entry Fields -->
+        <div class="input-section">
+            <label>Entry Price (USD): <span id="entry-price">Select a cryptocurrency</span></label><br>
+            <label>Amount in Trade (USD): <input type="number" id="trade-amount" placeholder="Enter amount"></label><br>
+            <label>Portfolio Size (USD): <input type="number" id="portfolio-size" placeholder="Enter portfolio size"></label><br>
+            <label>Risk Percentage (%): <input type="number" id="risk-percentage" placeholder="Enter risk percentage"></label><br>
+            <label>Leverage: <input type="number" id="leverage" placeholder="Enter leverage"></label><br>
+        </div>
+
+        <button onclick="calculateStopLoss()">Calculate Stop-Loss</button>
+
+        <h3 id="stop-loss-result">Stop-Loss Price: </h3>
+    </div>
+</body>
+</html>
 
