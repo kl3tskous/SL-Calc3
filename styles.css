@@ -1,31 +1,33 @@
-
 let entryPrice = 0;
 
-// Select a cryptocurrency and fetch its live price
+// Function to select a cryptocurrency and fetch live price
 async function selectCrypto(cryptoId, symbol) {
     const url = `https://api.coingecko.com/api/v3/simple/price?ids=${cryptoId}&vs_currencies=usd`;
-    const response = await fetch(url);
-    const data = await response.json();
-    entryPrice = data[cryptoId]?.usd;
-    document.getElementById('entry-price').innerText = `$${entryPrice.toFixed(2)} USD`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        entryPrice = data[cryptoId]?.usd;
+        document.getElementById("entry-price").innerText = `$${entryPrice.toFixed(2)} USD`;
+    } catch (error) {
+        document.getElementById("entry-price").innerText = "Error fetching price";
+        console.error("Error fetching live price:", error);
+    }
 }
 
-// Calculate Stop-Loss
+// Function to calculate stop-loss price
 function calculateStopLoss() {
     const tradeAmount = parseFloat(document.getElementById("trade-amount").value);
     const portfolioSize = parseFloat(document.getElementById("portfolio-size").value);
     const riskPercentage = parseFloat(document.getElementById("risk-percentage").value) / 100;
     const leverage = parseFloat(document.getElementById("leverage").value);
 
-    if (isNaN(tradeAmount) || isNaN(portfolioSize) || isNaN(riskPercentage) || isNaN(leverage) || isNaN(entryPrice)) {
+    if (isNaN(entryPrice) || isNaN(tradeAmount) || isNaN(portfolioSize) || isNaN(riskPercentage) || isNaN(leverage)) {
         alert("Please fill in all fields correctly.");
         return;
     }
 
-    // Calculate risk amount and stop-loss price
     const riskAmount = portfolioSize * riskPercentage;
     const stopLossPrice = entryPrice - (riskAmount / (tradeAmount * leverage));
-    
-    // Display result
+
     document.getElementById("stop-loss-result").innerText = `Stop-Loss Price: $${stopLossPrice.toFixed(2)}`;
 }
