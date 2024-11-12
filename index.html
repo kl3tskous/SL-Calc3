@@ -1,51 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Stop-Loss Calculator</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="scripts.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Stop-Loss Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
-    <div class="dashboard-container">
-        <h1>Crypto Stop-Loss Calculator</h1>
+  <div class="container">
+    <h1>Crypto Stop-Loss Calculator</h1>
+    
+    <!-- Introductory Text -->
+    <p class="intro-text">
+      This tool helps cryptocurrency traders set an optimal stop-loss price based on market data, position size, risk tolerance, and leverage. 
+      Select a cryptocurrency, view its live price and chart, and enter your trade details to calculate your stop-loss price.
+    </p>
 
-        <!-- Cryptocurrency Selection Buttons -->
-        <div class="crypto-selection">
-            <button class="crypto-button" onclick="selectCrypto('bitcoin', 'BTC')">BTC</button>
-            <button class="crypto-button" onclick="selectCrypto('ethereum', 'ETH')">ETH</button>
-            <button class="crypto-button" onclick="selectCrypto('solana', 'SOL')">SOL</button>
-        </div>
-
-        <!-- Entry Price and Calculation Fields -->
-        <div class="input-section">
-            <div class="input-group">
-                <label>Entry Price (USD): <span id="entry-price">Select a cryptocurrency</span></label>
-            </div>
-            <div class="input-group">
-                <label>Amount in Trade (USD):</label>
-                <input type="number" id="trade-amount" placeholder="Enter amount in USD">
-            </div>
-            <div class="input-group">
-                <label>Portfolio Size (USD):</label>
-                <input type="number" id="portfolio-size" placeholder="Enter portfolio size in USD">
-            </div>
-            <div class="input-group">
-                <label>Risk Percentage (%):</label>
-                <input type="number" id="risk-percentage" placeholder="Enter risk percentage">
-            </div>
-            <div class="input-group">
-                <label>Leverage:</label>
-                <input type="number" id="leverage" placeholder="Enter leverage">
-            </div>
-            <button class="calculate-btn" onclick="calculateStopLoss()">Calculate Stop-Loss</button>
-        </div>
-
-        <!-- Stop-Loss Result -->
-        <div class="result-section">
-            <h3 id="stop-loss-result">Stop-Loss Price: </h3>
-        </div>
+    <!-- Cryptocurrency Selection -->
+    <h2>Select Cryptocurrency</h2>
+    <p>Select a cryptocurrency to view its live price and chart data.</p>
+    <div class="crypto-selection">
+      <button onclick="selectCrypto('BTC')">BTC</button>
+      <button onclick="selectCrypto('ETH')">ETH</button>
+      <button onclick="selectCrypto('SOL')">SOL</button>
     </div>
+
+    <!-- Chart Container -->
+    <div id="chart-container">
+      <div id="chart"></div>
+    </div>
+
+    <!-- Entry Price Display or Custom Input -->
+    <div>
+      <label>
+        <input type="checkbox" id="useCustomEntryPrice" onclick="toggleCustomEntryPrice()"> Use Custom Entry Price
+      </label>
+      <div id="entryPriceContainer">
+        <span id="entry-price">Entry Price: --</span>
+        <input type="number" id="customEntryPrice" placeholder="Enter your custom entry price" style="display: none;">
+      </div>
+    </div>
+
+    <!-- Stop-Loss Calculator Form -->
+    <div class="calculator-form">
+      <label>
+        Amount in Trade:
+        <div class="input-group">
+          <input type="number" id="tradeAmount" placeholder="Enter amount">
+          <select id="tradeAmountType">
+            <option value="usd">USD</option>
+            <option value="crypto">Crypto</option>
+          </select>
+        </div>
+      </label>
+      <label>
+        Portfolio Size (USD):
+        <input type="number" id="portfolioSize" placeholder="Enter portfolio size">
+      </label>
+      <label>
+        Risk Percentage (%):
+        <input type="number" id="riskPercentage" placeholder="Enter risk percentage">
+      </label>
+      <label>
+        Leverage:
+        <input type="number" id="leverage" placeholder="Enter leverage (e.g., 1)">
+      </label>
+      <label>
+        Position Type:
+        <select id="positionType">
+          <option value="long">Long</option>
+          <option value="short">Short</option>
+        </select>
+      </label>
+      <button onclick="calculateStopLoss()">Calculate Stop-Loss</button>
+    </div>
+
+    <!-- Stop-Loss Price Display -->
+    <div id="stop-loss-result">Stop-Loss Price: --</div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
