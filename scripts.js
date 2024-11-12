@@ -93,16 +93,15 @@ function calculateStopLoss() {
         return;
     }
 
-    // Step 1: Calculate the risk amount based on isolated margin mode
-    // With isolated margin, the total risk is limited to the margin placed, which is (tradeAmount / leverage)
+    // Step 1: Calculate the isolated margin allocated to the position (collateral)
     const isolatedMargin = tradeAmount / leverage;
 
     // Step 2: Calculate the dollar risk based on portfolio size and risk percentage
     const dollarRisk = portfolioSize * riskPercentage;
 
-    // Step 3: Calculate the stop-loss distance in USD, adjusted for leverage
-    // With higher leverage, a smaller price movement should cover the dollar risk
-    const stopLossPrice = effectiveEntryPrice - (dollarRisk / (tradeAmount * leverage));
+    // Step 3: Adjust stop-loss distance with leverage in isolated margin mode
+    // With higher leverage, a smaller price movement covers the dollar risk, so stop-loss is closer
+    const stopLossPrice = effectiveEntryPrice - (dollarRisk / isolatedMargin);
 
     // Display the stop-loss price
     document.getElementById("stop-loss-result").innerText = `Stop-Loss Price: $${stopLossPrice.toFixed(2)}`;
