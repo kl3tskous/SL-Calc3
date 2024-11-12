@@ -13,10 +13,10 @@ async function selectCrypto(cryptoId, symbol) {
     try {
         const response = await fetch(url);
         const data = await response.json();
-        const parsedData = JSON.parse(data.contents); // Parse the data inside 'data.contents' for allorigins proxy
+        const parsedData = JSON.parse(data.contents);
 
         entryPrice = parsedData[cryptoId]?.usd;
-        
+
         if (entryPrice) {
             entryPriceField.innerText = `Entry Price: $${entryPrice.toFixed(2)} USD`;
             loadCandlestickChart(symbol); // Load the chart for the selected cryptocurrency
@@ -61,7 +61,7 @@ async function loadCandlestickChart(symbol) {
         if (!chart) {
             chart = LightweightCharts.createChart(document.getElementById("chart"), {
                 width: document.getElementById("chart-container").offsetWidth,
-                height: 200, // Adjust height for better mobile fit
+                height: 200,
                 layout: { backgroundColor: '#0d0e13', textColor: '#e0e0e0' },
                 grid: { vertLines: { color: '#2a2a2a' }, horzLines: { color: '#2a2a2a' } },
                 timeScale: { timeVisible: true, borderColor: '#2a2a2a' },
@@ -93,9 +93,16 @@ function calculateStopLoss() {
         return;
     }
 
+    // Step 1: Calculate the total amount willing to risk (in dollars)
     const riskAmount = portfolioSize * riskPercentage;
-    const stopLossPrice = effectiveEntryPrice - (riskAmount / (tradeAmount * leverage));
 
+    // Step 2: Calculate position size (number of units traded)
+    const positionSize = tradeAmount / effectiveEntryPrice;
+
+    // Step 3: Calculate the adjusted stop-loss price based on leverage
+    const stopLossPrice = effectiveEntryPrice - (riskAmount / (positionSize * leverage));
+
+    // Display the stop-loss price
     document.getElementById("stop-loss-result").innerText = `Stop-Loss Price: $${stopLossPrice.toFixed(2)}`;
     updateStopLossLine(stopLossPrice);
 }
