@@ -93,13 +93,14 @@ function calculateStopLoss() {
         return;
     }
 
-    // Step 1: Calculate the total amount willing to risk (in dollars)
+    // Step 1: Calculate the total amount willing to risk in USD
     const riskAmount = portfolioSize * riskPercentage;
 
     // Step 2: Calculate position size (number of units traded)
     const positionSize = tradeAmount / effectiveEntryPrice;
 
-    // Step 3: Calculate the adjusted stop-loss price based on leverage
+    // Step 3: Calculate the adjusted stop-loss price
+    // Higher leverage should place the stop-loss closer to entry to control the same risk in dollar terms
     const stopLossPrice = effectiveEntryPrice - (riskAmount / (positionSize * leverage));
 
     // Display the stop-loss price
