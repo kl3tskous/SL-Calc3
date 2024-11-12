@@ -77,7 +77,7 @@ async function loadCandlestickChart(symbol) {
     }
 }
 
-// Function to calculate stop-loss price
+// Function to calculate stop-loss price for isolated margin mode
 function calculateStopLoss() {
     const useCustomEntry = document.getElementById("useCustomEntryPrice").checked;
     const customEntryPrice = parseFloat(document.getElementById("customEntryPrice").value);
@@ -93,15 +93,16 @@ function calculateStopLoss() {
         return;
     }
 
-    // Step 1: Calculate the total amount willing to risk in USD
-    const riskAmount = portfolioSize * riskPercentage;
+    // Step 1: Calculate the risk amount based on isolated margin mode
+    // With isolated margin, the total risk is limited to the margin placed, which is (tradeAmount / leverage)
+    const isolatedMargin = tradeAmount / leverage;
 
-    // Step 2: Calculate position size (number of units traded)
-    const positionSize = tradeAmount / effectiveEntryPrice;
+    // Step 2: Calculate the dollar risk based on portfolio size and risk percentage
+    const dollarRisk = portfolioSize * riskPercentage;
 
-    // Step 3: Calculate the adjusted stop-loss price
-    // Higher leverage should place the stop-loss closer to entry to control the same risk in dollar terms
-    const stopLossPrice = effectiveEntryPrice - (riskAmount / (positionSize * leverage));
+    // Step 3: Calculate the stop-loss distance in USD, adjusted for leverage
+    // With higher leverage, a smaller price movement should cover the dollar risk
+    const stopLossPrice = effectiveEntryPrice - (dollarRisk / (tradeAmount * leverage));
 
     // Display the stop-loss price
     document.getElementById("stop-loss-result").innerText = `Stop-Loss Price: $${stopLossPrice.toFixed(2)}`;
